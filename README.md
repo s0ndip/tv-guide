@@ -11,7 +11,7 @@ To Use this epg add Following Link in Your Playlist.
 https://tv-guide-s0ndip.vercel.app/jiotv.xml.gz
 ```
 ```py
-[tv-guide-s0ndip.vercel.app]https://tv-guide-s0ndip.vercel.app/tataplay.xml.gz
+https://tv-guide-s0ndip.vercel.app/tataplay.xml.gz
 ```
 ### Credits 
 <a href="https://github.com/K-vanc/Tempest-EPG-Generator.git">K-vanc</a>
