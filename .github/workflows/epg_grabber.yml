@@ -19,48 +19,59 @@ jobs:
       run: |
         git config --global user.email "github-actions[bot]@users.noreply.github.com"
         git config --global user.name "github-actions[bot]"
-    
-    # Step 3: Install unzip and dos2unix
+
+    # Step 3: Install required tools
     - name: Install unzip and dos2unix
       run: |
         sudo apt-get update
-        sudo apt-get install -y unzip dos2unix  # Install unzip for zip file extraction
+        sudo apt-get install -y unzip dos2unix
 
-    # Step 4: Extract the password-protected .zip archive
+    # Step 4: Check if .zip file exists
+    - name: Verify .zip file exists
+      run: |
+        if [ ! -f epg-grabber.zip ]; then
+          echo "Error: epg-grabber.zip not found!"
+          exit 1
+        fi
+
+    # Step 5: Extract the password-protected .zip archive
     - name: Extract the password-protected .zip archive
       run: |
         mkdir -p /tmp/epg-grabber
-        unzip -P "${{ secrets.ZIP_PASSWORD }}" epg-grabber.zip -d /tmp/epg-grabber/  # Use -P for password-protected zip
+        unzip -P "${{ secrets.ZIP_PASSWORD }}" epg-grabber.zip -d /tmp/epg-grabber/
 
-    # Step 5: Convert line endings of epg.sh to Unix format
+    # Step 6: Convert line endings of epg.sh to Unix format
     - name: Convert line endings of epg.sh to Unix format
-      run: dos2unix /tmp/epg-grabber/epg.sh  # Convert line endings
+      run: dos2unix /tmp/epg-grabber/epg.sh
 
-    # Step 6: Make the script executable
+    # Step 7: Make the script executable
     - name: Make the script executable
       run: chmod +x /tmp/epg-grabber/epg.sh
 
-    # Step 7: Setup PHP environment
+    # Step 8: Setup PHP environment
     - name: Setup PHP
       uses: shivammathur/setup-php@2.31.1
       with:
-        php-version: 8.3 # Specify correct PHP version
+        php-version: 8.3
         extensions: xml, imagick, zip, curl
 
-    # Step 8: Run Tempest script
+    # Step 9: Run Tempest script
     - name: Run Tempest script
       run: /tmp/epg-grabber/epg.sh
 
-    # Step 9: Recreate the password-protected .zip archive
+    # Step 10: Recreate the password-protected .zip archive
     - name: Update and recreate the password-protected .zip archive
       run: |
         cd /tmp/epg-grabber
-        zip -r -P "${{ secrets.ZIP_PASSWORD }}" /tmp/epg-grabber-updated.zip .  # Recreate the zip archive with password
-        mv /tmp/epg-grabber-updated.zip ./epg-grabber.zip  # Move it back to repo's root
+        zip -r -P "${{ secrets.ZIP_PASSWORD }}" epg-grabber-updated.zip .
+        mv epg-grabber-updated.zip $GITHUB_WORKSPACE/epg-grabber.zip
 
-    # Step 10: Commit and push updates
+    # Step 11: Commit and push updates
     - name: Commit and push updates
       uses: stefanzweifel/git-auto-commit-action@v4
       with:
         commit_message: "Automated EPG update and .zip file update"
-        
+
+    # Step 12: Cleanup temporary files
+    - name: Cleanup
+      run: rm -rf /tmp/epg-grabber
