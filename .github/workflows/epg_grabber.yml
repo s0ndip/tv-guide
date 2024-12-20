@@ -1,0 +1,66 @@
+name: epg_grabber
+
+on:
+  schedule:
+    - cron: '30 00 * * *'   # 6:30 AM IST
+  workflow_dispatch: # Allows manual triggering
+
+jobs:
+  php-script:
+    runs-on: ubuntu-latest
+
+    steps:
+    # Step 1: Checkout code
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    # Step 2: Set up Git identity
+    - name: Set up Git identity
+      run: |
+        git config --global user.email "github-actions[bot]@users.noreply.github.com"
+        git config --global user.name "github-actions[bot]"
+    
+    # Step 3: Install unzip and dos2unix
+    - name: Install unzip and dos2unix
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y unzip dos2unix  # Install unzip for zip file extraction
+
+    # Step 4: Extract the password-protected .zip archive
+    - name: Extract the password-protected .zip archive
+      run: |
+        mkdir -p /tmp/epg-grabber
+        unzip -P "${{ secrets.ZIP_PASSWORD }}" epg-grabber.zip -d /tmp/epg-grabber/  # Use -P for password-protected zip
+
+    # Step 5: Convert line endings of epg.sh to Unix format
+    - name: Convert line endings of epg.sh to Unix format
+      run: dos2unix /tmp/epg-grabber/epg.sh  # Convert line endings
+
+    # Step 6: Make the script executable
+    - name: Make the script executable
+      run: chmod +x /tmp/epg-grabber/epg.sh
+
+    # Step 7: Setup PHP environment
+    - name: Setup PHP
+      uses: shivammathur/setup-php@2.31.1
+      with:
+        php-version: 8.3 # Specify correct PHP version
+        extensions: xml, imagick, zip, curl
+
+    # Step 8: Run Tempest script
+    - name: Run Tempest script
+      run: /tmp/epg-grabber/epg.sh
+
+    # Step 9: Recreate the password-protected .zip archive
+    - name: Update and recreate the password-protected .zip archive
+      run: |
+        cd /tmp/epg-grabber
+        zip -r -P "${{ secrets.ZIP_PASSWORD }}" /tmp/epg-grabber-updated.zip .  # Recreate the zip archive with password
+        mv /tmp/epg-grabber-updated.zip ./epg-grabber.zip  # Move it back to repo's root
+
+    # Step 10: Commit and push updates
+    - name: Commit and push updates
+      uses: stefanzweifel/git-auto-commit-action@v4
+      with:
+        commit_message: "Automated EPG update and .zip file update"
+        
