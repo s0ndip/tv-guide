@@ -6,12 +6,12 @@ export default function Home() {
     <div>
       <Head>
         <title>TV Guide for Indian TV Channels</title>
-        <meta name="description" content="Access Dynamic IPTV M3U playlist directly from the API." />
+        <meta name="description" content="Access TV Guide directly from the API." />
       </Head>
 
       <Container textAlign="center" style={{ marginTop: '50px' }}>
         <Header as="h1" style={{ fontSize: '3em' }}>
-        Dynamic IPTV M3U Playlist by s0ndip
+          TV Guide by s0ndip
         </Header>
 
         <Message info style={{ maxWidth: '600px', margin: '20px auto' }}>
@@ -31,7 +31,7 @@ export default function Home() {
           <Button 
             primary 
             size="large" 
-            href="/public/jiotv.xml.gz" 
+            href="/jiotv.xml.gz"  // This file should be in the public directory
             target="_blank" 
             rel="noopener noreferrer" 
             style={{ marginTop: '10px' }}
@@ -43,8 +43,8 @@ export default function Home() {
         <Message success style={{ maxWidth: '600px', margin: '20px auto' }}>
           <Message.Header>Note</Message.Header>
           <p>
-          This content is for educational purposes only. Please do not misuse or abuse the service. The creators
-          are not responsible for any misuse of the content or links provided.
+            This content is for educational purposes only. Please do not misuse or abuse the service. The creators
+            are not responsible for any misuse of the content or links provided.
           </p>
         </Message>
       </Container>
