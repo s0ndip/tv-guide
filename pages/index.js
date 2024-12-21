@@ -9,32 +9,27 @@ export default function Home() {
         <meta name="description" content="Access TV Guide for Indian Channels directly from the API." />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
       </Head>
-
       <Container textAlign="center" style={{ marginTop: '50px' }}>
         <Header as="h1" style={{ fontSize: '3em' }}>
           TV Guide for Indian Channels by s0ndip
         </Header>
-
         <main>
           <Message info style={{ maxWidth: '600px', margin: '20px auto' }}>
             <Message.Header>Access TV Guide for Indian Channels</Message.Header>
             <p>
-              You can access the TV Guide directly from API. The TV Guide you can use 
-            in OTT apps such as OTT Navigator and Tivimate.
+              You can access the TV Guide directly from API. The TV Guide you can use
+              in OTT apps such as OTT Navigator and Tivimate.
             </p>
           </Message>
-
           <Segment style={{ maxWidth: '600px', margin: '20px auto' }}>
             <Header as="h3" style={{ fontSize: '1.5em' }}>
               M3U Playlist
             </Header>
-            <p>
-              Click the links below to access or download TV Guide:
-            </p>
+            <p>Click the links below to access or download TV Guide:</p>
             <Button 
               primary 
               size="large" 
-              href="/public/jiotv.xml.gz" 
+              href="/jiotv.xml.gz" 
               target="_blank" 
               rel="noopener noreferrer" 
               style={{ marginTop: '10px' }}
@@ -45,7 +40,7 @@ export default function Home() {
             <Button 
               secondary 
               size="large" 
-              href="/public/tataplay.xml.gz" 
+              href="/tataplay.xml.gz" 
               target="_blank" 
               rel="noopener noreferrer" 
               style={{ marginTop: '10px', marginLeft: '10px' }}
@@ -54,7 +49,6 @@ export default function Home() {
               Download TataPlay TV Guide
             </Button>
           </Segment>
-
           <Message success style={{ maxWidth: '600px', margin: '20px auto' }}>
             <Message.Header>Note</Message.Header>
             <p>
