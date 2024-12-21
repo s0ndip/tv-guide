@@ -23,7 +23,7 @@ export default function Home() {
           </Message>
           <Segment style={{ maxWidth: '600px', margin: '20px auto' }}>
             <Header as="h3" style={{ fontSize: '1.5em' }}>
-              M3U Playlist
+              TV Guide
             </Header>
             <p>Click the links below to access or download TV Guide:</p>
             <Button 
